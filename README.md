@@ -18,3 +18,7 @@ The test setup:
 The LIN message frame as seen on the RX pin of the Master:
 
 ![image](https://github.com/psitech/Teensy-based-LIN-bus-Master-Slave/assets/27091013/a518352a-a7fb-4236-b1ca-b61e4781c8a5)
+
+The serial monitor of the Arduino IDE shows:
+
+![image](https://github.com/psitech/Teensy-based-LIN-bus-Master-Slave/assets/27091013/498b100d-62da-4ef4-91f2-6d53d5193fa4)
