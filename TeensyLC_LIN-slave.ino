@@ -7,7 +7,7 @@ elapsedMicros BreakLength;  // define timer
 
 bool WaitForBreakStart = true;  // first state of ISR
 bool WaitForBreakEnd = false;   // second state of ISR
-bool ValidLinFrame = false;     // set if valid LIN break detected
+bool ValidLINbreak = false;     // set if valid LIN break detected
 int linCS = 14;
 int RXpin = 9;
 uint8_t SYNC = 0x00;
@@ -23,7 +23,7 @@ void setup() {
 }
 
 void loop() {
-  if (ValidLinFrame) {               // if valid LIN break detected
+  if (ValidLINbreak) {               // if valid LIN break detected
     while (!Serial2.available()) {}  // wait for serial data to become available
     SYNC = Serial2.read();           // read SYNC byte from serial
     while (!Serial2.available()) {}  // wait for serial data to become available again
@@ -32,7 +32,7 @@ void loop() {
       Serial2.write(response, 8);    // if so, send 8 byte response
       Serial2.write(CRC);            // and send CRC byte
     }                                //
-    ValidLinFrame = false;           // reset bool
+    ValidLINbreak = false;           // reset bool
     WaitForBreakStart = true;        // set first state for RXisr
   }
 }
@@ -49,7 +49,7 @@ void RXisr() {
     if (digitalReadFast(RXpin) == HIGH) {                // if high, check break time
       if ((BreakLength > 600) && (BreakLength < 800)) {  // if break time in valid range [usec]
         WaitForBreakEnd = false;                         // reset this state
-        ValidLinFrame = true;                            // and set bool to be checked by loop()
+        ValidLINbreak = true;                            // and set bool to be checked by loop()
       } else {                                           // if break time not in valid range
         WaitForBreakEnd = false;                         // reset this state
         WaitForBreakStart = true;                        // and go to previous state
